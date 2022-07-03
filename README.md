@@ -4,9 +4,9 @@ It contains code for predicting creaky voice, as well as pre-trained models.
 
 
 We provide two pre-trained models:
-- [DeepFry - from the paper](https://github.com/bronichern/DeepFry/models/CREAK-220lr_0.001_decay_21_input_size_512_hidden_size_256_channels_512_normalize_False_measure_ff1_dropout_0.1_classes_3_.pth).
+- [DeepFry - from the paper](https://github.com/bronichern/DeepFry/raw/main/models/CREAK-220lr_0.001_decay_21_input_size_512_hidden_size_256_channels_512_normalize_False_measure_ff1_dropout_0.1_classes_3_.pth).
 - [DeepFry - trained on both the Nuclear and Pre-Nuclear
-datasets, that were described in the paper](https://github.com/bronichern/DeepFry/models/CREAK-74lr_0.001_decay_38_input_size_128_hidden_size_256_channels_512_normalize_False_measure_ff1_dropout_0.1_classes_3_logtxt_ff1_.pth).
+datasets, that were described in the paper](https://github.com/bronichern/DeepFry/raw/main/models/CREAK-74lr_0.001_decay_38_input_size_128_hidden_size_256_channels_512_normalize_False_measure_ff1_dropout_0.1_classes_3_logtxt_ff1_.pth).
 
 This repository enables you to identify creaky frames in a given audio, see details below.
 ## Requirements and Installation
