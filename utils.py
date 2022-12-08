@@ -76,7 +76,7 @@ def add_tier(tier_name, sections, description_type,f_window, max_time=-1, empty_
         if mark == 1:
             description = f"{description_type}"
         else:
-            description = "empty_desc" 
+            description = empty_desc
         if prev_end != start_sec:
             tier.add(prev_end, start_sec, "")
 

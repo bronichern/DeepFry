@@ -65,7 +65,7 @@ def create_predictions(test_loader, model, criterion, device, tv=0.5, tc=0.5):
     return global_test_loss.cpu(), creaky_accuracy, total, precision, recall, f1, predict_dict
 
 
-def test_textgrids(test_loader, model, criterion, device, window_size, output_path=None, tv=0.5, tc=0.5):
+def test_textgrids(test_loader, model, criterion, device, window_size, output_path=None, tv=0.5, tc=0.5,custom=False):
     global_test_loss, creaky_accuracy, total, precision, recall, f1, predict_dict = create_predictions(
         test_loader, model, criterion, device, tv, tc)
 
@@ -92,6 +92,6 @@ def test_textgrids(test_loader, model, criterion, device, window_size, output_pa
 
     if output_path:
         print(f"Creating textgridts into {output_path}")
-        utils.create_textgrid(predict_dict, output_path, window_size)
+        utils.create_textgrid(predict_dict, output_path, window_size, custom=custom)
 
     return global_test_loss, creaky_accuracy, f1[0], phone_f1, word_f1

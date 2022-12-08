@@ -42,7 +42,7 @@ def main(args):
         num_workers=args.workers, pin_memory=args.cuda, collate_fn= dataset.PadCollateRaw(dim=0, predict=True),drop_last=False)
 
 
-    train.test_textgrids(test_loader, test_model, criterion, device,args.window_size, args.output_dir, tv=args.tv,tc=args.tc)
+    train.test_textgrids(test_loader, test_model, criterion, device,args.window_size, args.output_dir, tv=args.tv,tc=args.tc, custom=args.custom)
 
 
 if __name__ == '__main__':

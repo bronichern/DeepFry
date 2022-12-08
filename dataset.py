@@ -23,7 +23,7 @@ def custom_dataset(window_size, data_path):
         y, _ = soundfile.read(wav_filename)
         
         file_et = len(y)/SR
-        labels_count = math.ceil(file_et / window_size)
+        labels_count = math.floor(file_et / window_size)
         creaky_labels = np.ones(labels_count)
 
         for i, idx in enumerate(range(int(np.ceil(len(y)/max_len))-1)):
