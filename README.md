@@ -59,26 +59,26 @@ python run.py --data_dir allstar --model_name model_path --cuda
 
 #### Run option #2: Output measures & Write predictions to a textgrid:
 ```
-python run.py --data_dir allstar --model_name model_path  --out_dir out_path --cuda
+python run.py --data_dir allstar --model_name model_path  --output_dir out_path --cuda
 ```
 
-where `model_path` is the absolute path to the pre-trained model, and `out_dir` is the path to the directory in which the textgrids will be saved to with the predictions of the model.
+where `model_path` is the absolute path to the pre-trained model, and `output_dir` is the path to the directory in which the textgrids will be saved to with the predictions of the model.
 
 ## Identify Creak - custom dataset - no annotations
 ```
-python run.py --data_dir data_path --model_name model_path --out_dir out_path --custom --cuda
+python run.py --data_dir data_path --model_name model_path --output_dir out_path --custom --cuda
 ```
 
-Where `model_path` and `out_dir` is the same as above and `data_path` is the absolute path to a directory with wav files in which creak should be identified.
+Where `model_path` and `output_dir` is the same as above and `data_path` is the absolute path to a directory with wav files in which creak should be identified.
 
 ## Identify Creak - custom dataset - with annotations
 - Annotated silences - optional: should be under 'Speaker - word' tier, marked as 'sp' or under 'creak-gold' without a mark.
 - Annotated creak - optional: should be under 'creak-gold' tier, marked as 'c'.  
 **You can refer to the TextGrid files in the "allstar" folder for an example**
 ```
-python run.py --data_dir data_path --model_name model_path --out_dir out_path --cuda
+python run.py --data_dir data_path --model_name model_path --output_dir out_path --cuda
 ```
 
-Where `model_path` and `out_dir` is the same as above and `data_path` is the absolute path to a directory with wav files in which creak should be identified alongside their corresponding textgrids.
+Where `model_path` and `output_dir` is the same as above and `data_path` is the absolute path to a directory with wav files in which creak should be identified alongside their corresponding textgrids.
 
 

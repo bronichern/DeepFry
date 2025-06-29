@@ -65,15 +65,17 @@ def create_predictions(test_loader, model, criterion, device, tv=0.5, tc=0.5):
     return global_test_loss.cpu(), creaky_accuracy, total, precision, recall, f1, predict_dict
 
 
-def test_textgrids(test_loader, model, criterion, device, window_size, output_path=None, tv=0.5, tc=0.5,custom=False):
+def test_textgrids(test_loader, model, criterion, device, window_size, has_textgrids, output_path=None, tv=0.5, tc=0.5,custom=False):
     global_test_loss, creaky_accuracy, total, precision, recall, f1, predict_dict = create_predictions(
         test_loader, model, criterion, device, tv, tc)
-
-    word_precision, word_recall, phone_precision, phone_recall = utils.word_pho_acc(
-        predict_dict, window_size)
-    phone_f1 = 2 * (phone_precision * phone_recall) / (phone_precision +
-                                                       phone_recall) if (phone_precision + phone_recall) > 0 else 0
-    word_f1 = 2 * (word_precision * word_recall) / (word_precision +
+    
+    phone_f1, word_f1 = None, None
+    if has_textgrids:
+        word_precision, word_recall, phone_precision, phone_recall = utils.word_pho_acc(
+            predict_dict, window_size)
+        phone_f1 = 2 * (phone_precision * phone_recall) / (phone_precision +
+                                                        phone_recall) if (phone_precision + phone_recall) > 0 else 0
+        word_f1 = 2 * (word_precision * word_recall) / (word_precision +
                                                     word_recall) if (word_precision + word_recall) > 0 else 0
 
     total_creaky_pred = []
@@ -84,11 +86,12 @@ def test_textgrids(test_loader, model, criterion, device, window_size, output_pa
             total_creaky_pred.extend(creaky_pred)
             total_creaky_label.extend(creaky_label)
 
-    print( f'\nTest set: Average loss: {global_test_loss:.4f}, Creaky Accuracy: {creaky_accuracy}, Creaky f1: {f1[0]}\n ')
-    print(f'\n Creaky Precision: {precision[0]}, Creaky Recall: {recall[0]}\n ')
+    if has_textgrids:
+        print( f'\nTest set: Average loss: {global_test_loss:.4f}, Creaky Accuracy: {creaky_accuracy}, Creaky f1: {f1[0]}\n ')
+        print(f'\n Creaky Precision: {precision[0]}, Creaky Recall: {recall[0]}\n ')
 
-    print(f"WORD - precision: {word_precision:.4f}, recall: {word_recall:.4f}, f1: {word_f1:.4f}")
-    print(f"PHONES - precision: {phone_precision:.4f}, recall: {phone_recall:.4f}, f1: {phone_f1:.4f}")
+        print(f"WORD - precision: {word_precision:.4f}, recall: {word_recall:.4f}, f1: {word_f1:.4f}")
+        print(f"PHONES - precision: {phone_precision:.4f}, recall: {phone_recall:.4f}, f1: {phone_f1:.4f}")
 
     if output_path:
         print(f"Creating textgridts into {output_path}")

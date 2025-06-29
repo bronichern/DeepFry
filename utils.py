@@ -3,6 +3,7 @@ import torch
 import numpy as np
 from data import textgrid, process_data
 import os
+import soundfile as sf
 
 NOT_CREAKY=0
 CREAKY=1
@@ -125,10 +126,22 @@ def create_textgrid(predict_dict, output,f_window, custom):
     if not os.path.exists(output):
         os.makedirs(output)
     for filename, predictions in predict_dict.items():
-        
-        prev_textgrid = textgrid.TextGrid.fromFile(filename)
-        
-        pred_creaky,target_creaky = create_tires(predictions,f_window, max_time=prev_textgrid.maxTime)
+        if os.path.exists(filename):
+            prev_textgrid = textgrid.TextGrid.fromFile(filename)
+            max_time = prev_textgrid.maxTime
+        else:
+            print(f"Textgrid {filename} does not exist, creating Textgrid file.")
+            prev_textgrid = textgrid.TextGrid(filename)
+            wav_file = filename.replace(".TextGrid", ".wav")
+            # find max time from wav file
+            if os.path.exists(wav_file):
+                y, sr = sf.read(wav_file)
+                max_time = len(y) / sr
+                prev_textgrid.maxTime = max_time
+                max_time = prev_textgrid.maxTime
+            else:
+                max_time = -1
+        pred_creaky,target_creaky = create_tires(predictions,f_window, max_time=max_time)
         
 
         basename = os.path.basename(filename)

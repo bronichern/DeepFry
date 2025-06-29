@@ -16,10 +16,11 @@ def custom_dataset(window_size, data_path):
     dataset = []
     max_len = 100
 
-    features_files_list = glob.glob(
-        os.path.join(data_path, data_path) + "/*.TextGrid")
-    for textgrid_file in features_files_list:
-        wav_filename = textgrid_file.replace(".TextGrid", ".wav")
+    wav_files = glob.glob(
+        os.path.join(data_path, data_path) + "/*.wav")
+    has_textgrids = len(glob.glob(os.path.join(data_path, data_path) + "/*.TextGrid")) > 0
+    for wav_filename in wav_files:
+        textgrid_file = wav_filename.replace(".wav", ".TextGrid")
         y, _ = soundfile.read(wav_filename)
         
         file_et = len(y)/SR
@@ -33,7 +34,7 @@ def custom_dataset(window_size, data_path):
             end_y = min(int((features_idx) * (SR * window_size)), len(y))
             creaky_label = creaky_labels[start_idx:features_idx]
             dataset.append([y[start_y: end_y], creaky_label, textgrid_file, start_idx])
-    return dataset
+    return dataset, has_textgrids
 
 
 def multi_dataset(window_size, data_path):
@@ -41,6 +42,7 @@ def multi_dataset(window_size, data_path):
     max_len = 100
     features_files_list = glob.glob(
         os.path.join(data_path, data_path) + "/*.TextGrid")
+    has_textgrids = len(features_files_list) > 0
     for textgrid_file in features_files_list:
         wav_filename = textgrid_file.replace(".TextGrid", ".wav")
         creaky_labels_array, voice_labels_array = get_file_labels_allstar(
@@ -103,7 +105,7 @@ def multi_dataset(window_size, data_path):
             dataset.append([y[start_y: end_y], creaky_label,
                             textgrid_file, start_idx])
 
-    return dataset
+    return dataset, has_textgrids
 
 
 class MutiTaskDataset(data.Dataset):
@@ -115,9 +117,9 @@ class MutiTaskDataset(data.Dataset):
         np.random.seed(seed)
         random.seed(seed)
         if is_custom:
-            dataset = custom_dataset(window_size, data_path)
+            dataset, self.has_textgrids = custom_dataset(window_size, data_path)
         else:
-            dataset = multi_dataset(window_size, data_path)
+            dataset, self.has_textgrids = multi_dataset(window_size, data_path)
         self.dataset = dataset
         self.normalize = normalize
         self.augment = augment
